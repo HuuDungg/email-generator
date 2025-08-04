@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HD Generate Email Professional</title>
+    <title>Tạo Email Xin Nghỉ Phép Chuyên Nghiệp</title>
     <style>
         /* ==== Reset & Layout ==== */
         * {
@@ -30,7 +30,7 @@
             padding: 40px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             position: relative;
             overflow: hidden;
         }
@@ -64,7 +64,7 @@
             text-align: center;
             color: #333;
             margin-bottom: 30px;
-            font-size: 2.5em;
+            font-size: 2.2em;
             font-weight: 700;
             background: linear-gradient(45deg, #667eea, #764ba2);
             -webkit-background-clip: text;
@@ -78,13 +78,22 @@
             font-weight: 600;
             color: #555;
             font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         /* ==== Form ==== */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
         .form-group {
             margin-bottom: 25px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
         }
 
         textarea,
@@ -101,7 +110,7 @@
 
         textarea {
             resize: vertical;
-            min-height: 120px;
+            min-height: 100px;
         }
 
         textarea:focus,
@@ -113,46 +122,81 @@
             transform: translateY(-2px);
         }
 
-        /* ==== Slider ==== */
-        .slider-container {
+        /* ==== Reason Chips ==== */
+        .reason-chips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .reason-chip {
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .slider {
-            flex: 1;
-            height: 8px;
-            border-radius: 5px;
-            background: #e1e5e9;
-            outline: none;
-            -webkit-appearance: none;
+        .reason-chip:hover {
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-color: #667eea;
+            transform: translateY(-2px);
         }
 
-        .slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
-        }
-
-        .token-value {
+        .reason-chip.selected {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            min-width: 60px;
+            border-color: #667eea;
+        }
+
+        /* ==== Urgency Level ==== */
+        .urgency-levels {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .urgency-option {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
             text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .urgency-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .urgency-option.selected {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .urgency-label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .urgency-desc {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
         }
 
         /* ==== Button ==== */
@@ -221,10 +265,27 @@
             border-radius: 10px;
             border: 1px solid #e1e5e9;
             white-space: pre-wrap;
-            font-family: 'Courier New', monospace;
+            font-family: Arial;
             line-height: 1.6;
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
+        }
+
+        .copy-btn {
+            margin-top: 15px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
         }
 
         .error-message {
@@ -292,174 +353,298 @@
             }
         }
 
-        /* ==== Prompt Chips ==== */
-        .prompt-suggestions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin-bottom: 15px;
-        }
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
 
-        .prompt-chip {
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-            border: 2px solid rgba(102, 126, 234, 0.2);
-            padding: 8px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 500;
-        }
+            .urgency-levels {
+                flex-direction: column;
+            }
 
-        .prompt-chip:hover {
-            background: linear-gradient(45deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-            border-color: #667eea;
-            transform: translateY(-2px);
+            .reason-chips {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>HD Generate Email Professional</h1>
-        <form id="emailForm">
-            <div class="form-group">
-                <label for="prompt">Prompt Email</label>
-                <div class="prompt-suggestions">
-                    <div class="prompt-chip"
-                        onclick="selectPrompt('Viết email mời họp công ty bằng tiếng Anh chuyên nghiệp')">
-                        📧 Email họp công ty
-                    </div>
-                    <div class="prompt-chip"
-                        onclick="selectPrompt('Viết email cảm ơn khách hàng sau khi mua hàng bằng tiếng Anh')">
-                        🙏 Cảm ơn khách hàng
-                    </div>
-                    <div class="prompt-chip"
-                        onclick="selectPrompt('Viết email mời Elon Musk ăn phở Việt Nam bằng tiếng Anh')">
-                        🍜 Mời Elon Musk
-                    </div>
-                    <div class="prompt-chip" onclick="selectPrompt('Viết email xin nghỉ phép bằng tiếng Anh lịch sự')">
-                        🏖️ Xin nghỉ phép
-                    </div>
-                    <div class="prompt-chip"
-                        onclick="selectPrompt('Viết email chúc mừng sinh nhật đồng nghiệp bằng tiếng Anh')">
-                        🎂 Chúc sinh nhật
-                    </div>
-                    <div class="prompt-chip"
-                        onclick="selectPrompt('Viết email giới thiệu sản phẩm mới bằng tiếng Anh')">
-                        🚀 Giới thiệu sản phẩm
-                    </div>
+        <h1>📧 Tạo Email Xin Nghỉ Phép Chuyên Nghiệp</h1>
+
+        <form id="leaveRequestForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="employeeName">👤 Họ và tên</label>
+                    <input type="text" id="employeeName" placeholder="Nguyễn Văn A" required>
                 </div>
-                <textarea id="prompt" required>Viết email mời Elon Musk ăn phở Việt Nam bằng tiếng Anh</textarea>
+                <div class="form-group">
+                    <label for="position">💼 Chức vụ</label>
+                    <input type="text" id="position" placeholder="Nhân viên Marketing" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="managerName">👨‍💼 Tên quản lý trực tiếp</label>
+                    <input type="text" id="managerName" placeholder="Trần Thị B" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">🏢 Phòng ban</label>
+                    <input type="text" id="department" placeholder="Phòng Marketing" required>
+                </div>
             </div>
 
             <div class="form-group">
-                <label for="maxTokens">Max Tokens: <span id="tokenValue">300</span></label>
-                <div class="slider-container">
-                    <input type="range" id="maxTokens" class="slider" min="50" max="1000" value="300"
-                        oninput="updateTokenValue(this.value)" />
-                    <div class="token-value" id="tokenDisplay">300</div>
+                <label>🎯 Lý do nghỉ phép</label>
+                <div class="reason-chips">
+                    <div class="reason-chip" data-reason="ốm đau">🤒 Ốm đau, bệnh tật</div>
+                    <div class="reason-chip" data-reason="việc gia đình">👨‍👩‍👧‍👦 Việc gia đình khẩn cấp</div>
+                    <div class="reason-chip" data-reason="du lịch">✈️ Du lịch, nghỉ dưỡng</div>
+                    <div class="reason-chip" data-reason="kết hôn">💒 Đám cưới</div>
+                    <div class="reason-chip" data-reason="tang lễ">⚰️ Tang lễ</div>
+                    <div class="reason-chip" data-reason="học tập">📚 Học tập, thi cử</div>
+                    <div class="reason-chip" data-reason="cá nhân">👤 Việc cá nhân quan trọng</div>
+                    <div class="reason-chip" data-reason="khác">❓ Lý do khác</div>
                 </div>
+                <textarea id="customReason" placeholder="Mô tả chi tiết lý do nghỉ phép (nếu cần)..."
+                    style="margin-top: 10px;"></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="startDate">📅 Ngày bắt đầu nghỉ</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">📅 Ngày kết thúc nghỉ</label>
+                    <input type="date" id="endDate" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>⚡ Mức độ khẩn cấp</label>
+                <div class="urgency-levels">
+                    <div class="urgency-option" data-urgency="bình thường">
+                        <div class="urgency-label">🟢 Bình thường</div>
+                        <div class="urgency-desc">Có thể lên kế hoạch trước</div>
+                    </div>
+                    <div class="urgency-option selected" data-urgency="quan trọng">
+                        <div class="urgency-label">🟡 Quan trọng</div>
+                        <div class="urgency-desc">Cần được phê duyệt sớm</div>
+                    </div>
+                    <div class="urgency-option" data-urgency="khẩn cấp">
+                        <div class="urgency-label">🔴 Khẩn cấp</div>
+                        <div class="urgency-desc">Cần phê duyệt ngay lập tức</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="handover">🔄 Bàn giao công việc</label>
+                <textarea id="handover"
+                    placeholder="Mô tả cách bàn giao công việc trong thời gian nghỉ phép (ai sẽ thay thế, công việc nào cần ưu tiên...)"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="contact">📞 Thông tin liên lạc khẩn cấp</label>
+                <input type="text" id="contact"
+                    placeholder="Số điện thoại hoặc email liên lạc trong trường hợp khẩn cấp">
             </div>
 
             <button type="submit" class="generate-btn" id="generateBtn">
-                🚀 Generate Email
+                🚀 Tạo Email Xin Nghỉ Phép
             </button>
         </form>
 
         <div class="loading" id="loading">
             <div class="spinner"></div>
-            <div class="loading-text">Đang tạo email chuyên nghiệp...</div>
+            <div class="loading-text">Đang tạo email xin nghỉ phép chuyên nghiệp...</div>
         </div>
 
         <div class="error-message" id="errorMessage"></div>
 
         <div class="result-container" id="resultContainer">
-            <h3 style="color:#667eea; margin-bottom:15px;">📧 Email được tạo:</h3>
+            <h3 style="color:#667eea; margin-bottom:15px;">📧 Email xin nghỉ phép của bạn:</h3>
             <div class="result-email" id="resultEmail"></div>
             <button class="copy-btn" onclick="copyToClipboard()">📋 Copy Email</button>
         </div>
-
-        <!-- ==== Google AdSense ==== -->
-        <ins class="adsbygoogle" style="display:block;width:100%;" data-ad-client="ca-pub-1936039999274874"
-            data-ad-slot="8784754212" data-ad-format="fluid" data-full-width-responsive="true">
-        </ins>
     </div>
 
-    <!-- ==== Scripts ==== -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1936039999274874"
-        crossorigin="anonymous"></script>
     <script>
-        // Đợi trang load xong rồi push ads
-        window.addEventListener('load', function () {
-            (adsbygoogle = window.adsbygoogle || []).push({});
+        let selectedReason = '';
+        let selectedUrgency = 'quan trọng';
+
+        // Xử lý chọn lý do
+        document.querySelectorAll('.reason-chip').forEach(chip => {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('.reason-chip').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedReason = this.dataset.reason;
+            });
         });
 
-        function updateTokenValue(v) {
-            document.getElementById('tokenValue').textContent = v;
-            document.getElementById('tokenDisplay').textContent = v;
-        }
-        function selectPrompt(text) {
-            document.getElementById('prompt').value = text;
-        }
-        async function generateEmail(prompt, maxTokens) {
-            const res = await fetch('https://api.cohere.com/v1/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer FFX4VgUl3Dlq0PW6jEExKHxXEQYXf3AA1LCh7UMr'
-                },
-                body: JSON.stringify({ prompt, max_tokens: parseInt(maxTokens) })
+        // Xử lý chọn mức độ khẩn cấp
+        document.querySelectorAll('.urgency-option').forEach(option => {
+            option.addEventListener('click', function () {
+                document.querySelectorAll('.urgency-option').forEach(o => o.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedUrgency = this.dataset.urgency;
             });
-            if (!res.ok) throw new Error(`Status ${res.status}`);
-            return res.json();
+        });
+
+        // Tự động set ngày hiện tại
+        document.getElementById('startDate').valueAsDate = new Date();
+
+        // Tự động set ngày kết thúc sau 1 ngày
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('endDate').valueAsDate = tomorrow;
+
+        function generateLeaveRequestEmail(data) {
+            const urgencyMap = {
+                'bình thường': 'Bình thường',
+                'quan trọng': 'Quan trọng',
+                'khẩn cấp': 'KHẨN CẤP'
+            };
+
+            const startDate = new Date(data.startDate).toLocaleDateString('vi-VN');
+            const endDate = new Date(data.endDate).toLocaleDateString('vi-VN');
+
+            const daysDiff = Math.ceil((new Date(data.endDate) - new Date(data.startDate)) / (1000 * 60 * 60 * 24)) + 1;
+
+            let email = `Kính gửi ${data.managerName},
+
+Tôi là ${data.employeeName}, ${data.position} tại ${data.department}.
+
+Tôi viết email này để xin phép được nghỉ ${daysDiff} ngày từ ${startDate} đến ${endDate}.
+
+📋 THÔNG TIN CHI TIẾT:
+• Lý do nghỉ phép: ${selectedReason.charAt(0).toUpperCase() + selectedReason.slice(1)}`;
+
+            if (data.customReason.trim()) {
+                email += `
+• Mô tả chi tiết: ${data.customReason.trim()}`;
+            }
+
+            email += `
+• Thời gian nghỉ: ${daysDiff} ngày (từ ${startDate} đến ${endDate})
+• Mức độ: ${urgencyMap[selectedUrgency]}`;
+
+            if (data.handover.trim()) {
+                email += `
+
+🔄 KẾ HOẠCH BÀN GIAO:
+${data.handover.trim()}`;
+            }
+
+            if (data.contact.trim()) {
+                email += `
+
+📞 LIÊN LẠC KHẨN CẤP:
+${data.contact.trim()}`;
+            }
+
+            email += `
+
+Tôi cam đoan sẽ hoàn thành tất cả công việc cần thiết trước khi nghỉ phép và sẵn sàng bàn giao chi tiết cho đồng nghiệp thay thế.
+
+Tôi rất mong nhận được sự phê duyệt của anh/chị.
+
+Trân trọng cảm ơn!
+
+${data.employeeName}
+${data.position}
+${data.department}`;
+
+            return email;
         }
+
         function showLoading() {
             document.getElementById('loading').classList.add('show');
             const btn = document.getElementById('generateBtn');
-            btn.disabled = true; btn.textContent = '⏳ Đang tạo...';
+            btn.disabled = true;
+            btn.textContent = '⏳ Đang tạo...';
         }
+
         function hideLoading() {
             document.getElementById('loading').classList.remove('show');
             const btn = document.getElementById('generateBtn');
-            btn.disabled = false; btn.textContent = '🚀 Generate Email';
+            btn.disabled = false;
+            btn.textContent = '🚀 Tạo Email Xin Nghỉ Phép';
         }
+
         function showResult(email) {
             document.getElementById('resultEmail').textContent = email;
             document.getElementById('resultContainer').classList.add('show');
             document.getElementById('errorMessage').classList.remove('show');
         }
+
         function showError(msg) {
             const e = document.getElementById('errorMessage');
-            e.textContent = msg; e.classList.add('show');
+            e.textContent = msg;
+            e.classList.add('show');
             document.getElementById('resultContainer').classList.remove('show');
         }
+
         function copyToClipboard() {
             const txt = document.getElementById('resultEmail').textContent;
             navigator.clipboard.writeText(txt).then(() => {
-                const btn = event.target, old = btn.textContent;
+                const btn = event.target;
+                const oldText = btn.textContent;
                 btn.textContent = '✅ Đã copy!';
-                setTimeout(() => btn.textContent = old, 2000);
-            }).catch(_ => alert('Không thể copy, vui lòng copy thủ công.'));
+                setTimeout(() => btn.textContent = oldText, 2000);
+            }).catch(() => {
+                alert('Không thể copy, vui lòng copy thủ công.');
+            });
         }
 
-        document.getElementById('emailForm').addEventListener('submit', async e => {
+        document.getElementById('leaveRequestForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const p = document.getElementById('prompt').value.trim();
-            const t = document.getElementById('maxTokens').value;
-            if (!p) { showError('Vui lòng nhập prompt để tạo email!'); return; }
-            showLoading();
-            try {
-                const result = await generateEmail(p, t);
-                if (result.generations?.length) {
-                    showResult(result.generations[0].text.trim());
-                } else throw new Error('Không có phản hồi từ API');
-            } catch (err) {
-                showError(`Lỗi khi tạo email: ${err.message}`);
-            } finally {
-                hideLoading();
+
+            const formData = {
+                employeeName: document.getElementById('employeeName').value.trim(),
+                position: document.getElementById('position').value.trim(),
+                managerName: document.getElementById('managerName').value.trim(),
+                department: document.getElementById('department').value.trim(),
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                customReason: document.getElementById('customReason').value,
+                handover: document.getElementById('handover').value,
+                contact: document.getElementById('contact').value
+            };
+
+            // Validation
+            if (!formData.employeeName || !formData.position || !formData.managerName ||
+                !formData.department || !formData.startDate || !formData.endDate) {
+                showError('Vui lòng điền đầy đủ thông tin bắt buộc!');
+                return;
             }
+
+            if (!selectedReason) {
+                showError('Vui lòng chọn lý do nghỉ phép!');
+                return;
+            }
+
+            if (new Date(formData.startDate) > new Date(formData.endDate)) {
+                showError('Ngày bắt đầu không thể sau ngày kết thúc!');
+                return;
+            }
+
+            showLoading();
+
+            // Simulate processing time
+            setTimeout(() => {
+                try {
+                    const email = generateLeaveRequestEmail(formData);
+                    showResult(email);
+                } catch (error) {
+                    showError('Có lỗi xảy ra khi tạo email. Vui lòng thử lại!');
+                } finally {
+                    hideLoading();
+                }
+            }, 1500);
         });
     </script>
 </body>
